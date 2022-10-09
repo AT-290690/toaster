@@ -1,15 +1,30 @@
+const languages = {
+  EN: [
+    'LOADING...',
+    'Lower the lever\nto toast.',
+    'That was fun!\nDo it again!'
+  ],
+  BG: [
+    'ЗАРЕЖДА СЕ...',
+    'Спусни ръчката,\nза да печеш.',
+    'Това беше забавно!\nХайде пак!'
+  ]
+};
+const params = new URLSearchParams(document.location.search);
+const LANGUAGE =
+  languages[params.get('lang')?.toUpperCase()] ?? languages['EN'];
+const [loadingMessage, tutorialMessage, againMessage] = LANGUAGE;
+const textEl = document.getElementById('tutorial_text');
+textEl.textContent = loadingMessage;
 (() => {
-  const message = 'Lower the lever\n to toast!';
-
   const JSON_DATA = {
     toasterAnimation: {}
   };
-  const textEl = document.getElementById('tutorial_text');
   async function loadJSONinRepl() {
     JSON_DATA.toasterAnimation = __toaster_animation_data__;
   }
   const toasterApp = () => {
-    textEl.textContent = message;
+    textEl.textContent = tutorialMessage;
     const methodsLibrary = {
       animation_interactions: {
         restart: function () {
@@ -105,7 +120,7 @@
                         };
                         Animation.isBaking.set(false);
                         textEl.style.visibility = 'visible';
-                        textEl.textContent = 'That was fun!\nDo it again!';
+                        textEl.textContent = againMessage;
                         self.dragLever(lever, toast, onEndParams);
                       }
                     });
@@ -158,7 +173,7 @@
                       };
                       Animation.isBaking.set(false);
                       textEl.style.visibility = 'visible';
-                      textEl.innerHTML = 'That was fun!<br/> Do it again!';
+                      textEl.innerHTML = againMessage;
                       self.dragLever(lever, toast, onEndParams);
                     }
                   });
